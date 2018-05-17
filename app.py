@@ -21,7 +21,7 @@ def scrape():
     # Store the return value in Mongo as a Python dictionary
     mars.update(
         {},
-        data,
+        mars_data,
         upsert=True
     )
     return redirect("http://localhost:5000/", code=302)
