@@ -45,17 +45,7 @@
           </button>
           <a class="navbar-brand" href="#">UNCC Data Analytics Beth Yoder</a>
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <form class="navbar-form navbar-right">
-            <div class="form-group">
-              <input type="text" placeholder="Email" class="form-control">
-            </div>
-            <div class="form-group">
-              <input type="password" placeholder="Password" class="form-control">
-            </div>
-            <button type="submit" class="btn btn-success">Sign in</button>
-          </form>
-        </div><!--/.navbar-collapse -->
+        <!--/.navbar-collapse -->
       </div>
     </nav>
 
@@ -63,7 +53,7 @@
     <div class="jumbotron">
       <div class="container">
         <h1>Mission to Mars</h1>
-        <p><a class="btn btn-primary btn-lg" href="#" role="button">Scrape New Data &raquo;</a></p>
+        <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data &raquo;</a></p>
       </div>
     </div>
 
@@ -72,20 +62,23 @@
       <div class="row">
         <div class="col-md-4">
           <h2>Latest Mars News</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+          <p>{{ mars.report }} </p>
+          
         </div>
-        <div class="col-md-4">
+        <div class="row">
           <h2>Featured Mars Image</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+          {% for img in images%}
+          <div class="col-md-3">
+          <pre><h5>{{img.alt}}</h5></pre>
+          <img src={{img.src}} alt="Mars image" width="350">
+          </div>
+      {% endfor%}
+
+          <p>{{ mars.image }} </p>
        </div>
         <div class="col-md-4">
           <h2>Mars Facts</h2>
-          <p>{% for hurricane in hurricanes %}
-            <li>{{ hurricane.name }}: {{ hurricane.cat }}</li>
-          {% endfor %}</p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+          <p>{{ mars.facts  }}</p>
         </div>
       </div>
 
