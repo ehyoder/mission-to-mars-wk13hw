@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[2]:
+# In[13]:
 
 
 # Import dependencies
@@ -13,13 +13,13 @@ import time
 from splinter import Browser
 
 
-# In[3]:
+# In[14]:
 
 
 #!which chromedriver
 
 
-# In[4]:
+# In[15]:
 
 
 # Initialize Chromedriver 
@@ -27,13 +27,13 @@ executable_path = {'executable_path': 'chromedriver'}
 browser = Browser('chrome', **executable_path, headless= False)
 
 
-# In[ ]:
+# In[16]:
 
 
 ########################### NASA MARS NEWS ###########################
 
 
-# In[ ]:
+# In[17]:
 
 
 # URL for scrape
@@ -41,7 +41,7 @@ url = "https://mars.nasa.gov/news/"
 browser.visit(url)
 
 
-# In[ ]:
+# In[18]:
 
 
 # Retrieve page with the requests module
@@ -49,7 +49,7 @@ response = requests.get(url)
 print(response)
 
 
-# In[ ]:
+# In[19]:
 
 
 # Create BeautifulSoup object; parse with 'html.parser'
@@ -57,36 +57,36 @@ soup = BeautifulSoup(response.text, 'html.parser')
 type(soup)
 
 
-# In[ ]:
+# In[20]:
 
 
 # Examine the results, then determine element that contains news title and news paragraph text
 print(soup.prettify())
 
 
-# In[ ]:
+# In[21]:
 
 
-# Find the content_title class, which contains the titles of the news articles; returns a list
+# Find the content_title class, which contains the titles of the news articles
 content_title = soup.find(class_="content_title")
 print(content_title)
 
 
-# In[ ]:
+# In[22]:
 
 
 news_title = content_title.find("a").get_text()
 print(news_title)
 
 
-# In[ ]:
+# In[23]:
 
 
 news_p = soup.find(class_="rollover_description_inner").get_text()
 print(news_p)
 
 
-# In[ ]:
+# In[24]:
 
 
 ########################### JPL MARS SPACE IMAGES - FEATURED IMAGE ###########################
@@ -95,7 +95,7 @@ url = "https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars"
 browser.visit(url)
 
 
-# In[ ]:
+# In[25]:
 
 
 # Retrieve page with the requests module
@@ -103,38 +103,61 @@ response = requests.get(url)
 print(response)
 
 
-# In[ ]:
+# In[26]:
 
 
-# Create BeautifulSoup object; parse with 'html.parser'
-soup = BeautifulSoup(response.text, 'html.parser')
-type(soup)
+# Design an XPATH selector to grab the full seize featured image
+# xpath = '//*[@id="fancybox-lock"]/div/div[1]/img'
 
 
-# In[ ]:
+# In[27]:
 
 
-# Examine the results, then determine element that contains images and url
-print(soup.prettify())
+# Use splinter to bring up the full resolution image
+# results = browser.find_by_xpath(xpath)
+# print(results)
 
 
-# In[ ]:
+# In[28]:
 
 
-# Find image url to full size
-carousel_items = soup.find(class_="carousel_items")
-print(carousel_items)
-# Save a complete url string for this image
+# img = results[0]
+# img.click()
 
 
-# In[ ]:
+# In[29]:
 
 
-#for link in carousel_items:
-    #print(carousel_items.get('data-fancybox-href'))
+# Create BeautifulSoup object; parse to find the full resolution image of mars
+html = browser.html
+soup = BeautifulSoup(html, 'html.parser')
+print(soup)
 
 
-# In[ ]:
+# In[30]:
+
+
+a_href = soup.select('a[href]')
+print(a_href)
+
+
+# In[31]:
+
+
+a = soup.find_all('a')
+#print(a)
+for link in soup.find_all('a'):
+    print(link.get('data-fancybox-href')) 
+
+
+# In[32]:
+
+
+# This is a cheat because I was unable to parse down to only the jpg I wanted so I am just looking at it from the code above
+featured_image_url = "https:www.jpl.nasa.gov/spaceimages/images/mediumsize/PIA07137_ip.jpg"
+
+
+# In[35]:
 
 
 ########################### MARS WEATHER ###########################
@@ -144,7 +167,7 @@ url = "http://twitter.com/marswxreport?lang=en"
 browser.visit(url)
 
 
-# In[ ]:
+# In[36]:
 
 
 # Retrieve page with the requests module
@@ -152,7 +175,7 @@ response = requests.get(url)
 print(response)
 
 
-# In[ ]:
+# In[37]:
 
 
 # Create BeautifulSoup object; parse with 'html.parser'
@@ -160,21 +183,21 @@ soup = BeautifulSoup(response.text, 'html.parser')
 type(soup)
 
 
-# In[ ]:
+# In[38]:
 
 
 # Examine the results, then determine element that contains mars weather 
 print(soup.prettify())
 
 
-# In[ ]:
+# In[39]:
 
 
 mars_weather = soup.find(class_="js-tweet-text-container").get_text()
 print(mars_weather)
 
 
-# In[ ]:
+# In[41]:
 
 
 ########################### MARS FACTS ###########################
@@ -185,7 +208,7 @@ tables = pd.read_html(facts_url)
 tables
 
 
-# In[ ]:
+# In[42]:
 
 
 # Convert list to dataframe
@@ -196,7 +219,7 @@ facts_df.set_index(0, inplace=True)
 facts_df.head(8)
 
 
-# In[ ]:
+# In[43]:
 
 
 # Use pandas to convert the data to a HTML table string
@@ -210,7 +233,7 @@ print(facts_table_html)
 ########################### MARS HEMISPHERES ###########################
 
 
-# In[5]:
+# In[44]:
 
 
 # Visit the USGS Astrogeology site to obtain hi-res images for each of Mars' hemispheres
@@ -219,7 +242,7 @@ browser.visit(url)
 html = browser.html
 
 
-# In[6]:
+# In[45]:
 
 
 # Retrieve page with the requests module
@@ -227,7 +250,7 @@ response = requests.get(url)
 print(response)
 
 
-# In[7]:
+# In[46]:
 
 
 # Create BeautifulSoup object; parse with 'html.parser'
@@ -235,23 +258,23 @@ soup = BeautifulSoup(html, 'html.parser')
 type(soup)
 
 
-# In[8]:
+# In[47]:
 
 
 # Examine the results, then determine element that contains images
 print(soup.prettify())
 
 
-# In[13]:
+# In[48]:
 
 
 # Find all image tags
 images = soup.find_all("img")
-#print(images)
-type(images)
+print(images)
+#type(images)
 
 
-# In[12]:
+# In[49]:
 
 
 # List comprehension to find only the hemispheres images
@@ -259,27 +282,18 @@ img_url = [img["src"] for img in soup.find_all("img") if "Hemisphere" in img["al
 print(img_url)
 
 
-# In[ ]:
+# In[50]:
 
 
-#soup.img.attrs
+# List comprehension to find only the hemisphere names
+hemisphere_title = [img["alt"] for img in soup.find_all("img") if "Hemisphere" in img["alt"]]
+print(hemisphere_title)
 
 
-# In[ ]:
+# In[53]:
 
-
-# Save image url string and the hemisphere title containing the hemisphere name
 
 # Use a python dictionary to store the data using keys img_url and hemisphere title
-def hemisphere_dict(img_url, title):
-    return {
-        "": img_url,
-        "": title
-    }
-
-
-# Append the dictionary with the image url string and the hemisphere title to a list; the list will contain one dictionary for each hemisphere
-
-# Store image data in array 
- 
+hemisphere_dictionary = dict(zip(img_url, hemisphere_title))
+print(hemisphere_dictionary)
 

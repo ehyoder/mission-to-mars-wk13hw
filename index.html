@@ -62,9 +62,7 @@
       <div class="row">
         <div class="col-md-4">
           <h2>Latest Mars News</h2>
-          <p>{{ mars.report }} </p>
-          
-
+          <p>{{ mars.news_title }} </p>          
           <div class="row">
             <div class="col-md-4">
               <h2>Mars Weather</h2>
@@ -72,12 +70,10 @@
         </div>
         <div class="row">
           <h2>Featured Mars Image</h2>
-          {% for img in images%}
-          <div class="col-md-3">
-          <pre><h5>{{img.alt}}</h5></pre>
-          <img src={{img.src}} alt="Mars image" width="350">
+          {{ mars.featured_image_url}}
+         
           </div>
-      {% endfor%}
+     
 
           <p>{{ mars.image }} </p>
        </div>
